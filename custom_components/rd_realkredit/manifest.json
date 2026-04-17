@@ -1,1 +1,13 @@
+{
+  "domain": "rd_realkredit",
+  "name": "Realkredit Danmark Kurser",
+  "version": "1.0.0",
+  "config_flow": true,
+  "documentation": "https://github.com/knudhamm/rd-realkredit-ha",
+  "issue_tracker": "https://github.com/knudhamm/rd-realkredit-ha/issues",
+  "dependencies": [],
+  "codeowners": ["@knudhamm"],
+  "requirements": [],
+  "iot_class": "cloud_polling"
+}
 
