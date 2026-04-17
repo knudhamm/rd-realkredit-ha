@@ -96,8 +96,8 @@ class RDKursSensor(CoordinatorEntity, SensorEntity):
 
         safe = _safe_name(self._bond_name)
         self._attr_unique_id = f"{entry_id}_kurs_{self._isin}"
-        self._attr_name = f"RD Kurs {self._bond_name}"
-        self._attr_has_entity_name = False
+        self._attr_name = "Kurs"
+        self._attr_has_entity_name = True
 
     @property
     def _current_bond(self) -> dict | None:
@@ -169,8 +169,8 @@ class RDRenteSensor(CoordinatorEntity, SensorEntity):
         self._loan_code = bond.get("loanTypeCode", "")
 
         self._attr_unique_id = f"{entry_id}_rente_{self._isin}"
-        self._attr_name = f"RD Rente {self._bond_name}"
-        self._attr_has_entity_name = False
+        self._attr_name = "Effektiv rente"
+        self._attr_has_entity_name = True
 
     @property
     def _current_bond(self) -> dict | None:
@@ -215,4 +215,3 @@ class RDRenteSensor(CoordinatorEntity, SensorEntity):
             manufacturer="Realkredit Danmark",
             model=LOAN_TYPE_NAMES.get(self._loan_code, "Obligation"),
         )
-
