@@ -1,1 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Realkredit Danmark Kurser",
+        "description": "Vælg de obligationer du ønsker som sensorer.\n★ = åben for tilbud (har aktuel udbetalingskurs)",
+        "data": {
+          "selected_bonds": "Obligationer"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kunne ikke forbinde til RD API — tjek din internetforbindelse",
+      "no_bonds_selected": "Vælg mindst én obligation"
+    },
+    "abort": {
+      "already_configured": "Realkredit Danmark er allerede konfigureret"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Skift valgte obligationer",
+        "description": "Tilføj eller fjern obligationer. ★ = åben for tilbud",
+        "data": {
+          "selected_bonds": "Obligationer"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kunne ikke forbinde til RD API",
+      "no_bonds_selected": "Vælg mindst én obligation"
+    }
+  }
+}
 
