@@ -1,1 +1,203 @@
+type: vertical-stack
+cards:
 
+  # ── Header ──────────────────────────────────────────────
+  - type: custom:mushroom-title-card
+    title: Realkredit Danmark
+    subtitle: Kurser opdateres kl. ~15:00 på bankdage
+
+  # ── Kurs chips ──────────────────────────────────────────
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: template
+        icon: mdi:bank
+        icon_color: >
+          {% set k = states('sensor.0050_rd_20s_2027_kurs') | float(0) %}
+          {{ 'green' if k >= 100 else 'blue' }}
+        content: >
+          0,50% S2027 · {{ states('sensor.0050_rd_20s_2027_kurs') }}%
+        tap_action:
+          action: more-info
+          entity: sensor.0050_rd_20s_2027_kurs
+
+      - type: template
+        icon: mdi:chart-line
+        icon_color: amber
+        content: >
+          10A 2027 · {{ states('sensor.0100_rd_10a_2027_01_01_kurs') }}%
+        tap_action:
+          action: more-info
+          entity: sensor.0100_rd_10a_2027_01_01_kurs
+
+  # ── Kurs-kort ───────────────────────────────────────────
+  - type: horizontal-stack
+    cards:
+
+      - type: custom:mushroom-entity-card
+        entity: sensor.0050_rd_20s_2027_kurs
+        name: "0,50% S 2027"
+        icon: mdi:bank
+        icon_color: >
+          {% set k = states('sensor.0050_rd_20s_2027_kurs') | float(0) %}
+          {{ 'green' if k >= 100 else 'blue' }}
+        primary_info: state
+        secondary_info: last-changed
+        layout: vertical
+        fill_container: true
+        tap_action:
+          action: more-info
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(var(--rgb-blue-color), 0.08);
+              border: 1px solid rgba(var(--rgb-blue-color), 0.2);
+            }
+
+      - type: custom:mushroom-entity-card
+        entity: sensor.0100_rd_10a_2027_01_01_kurs
+        name: "1% 10A 2027"
+        icon: mdi:chart-line
+        icon_color: amber
+        primary_info: state
+        secondary_info: last-changed
+        layout: vertical
+        fill_container: true
+        tap_action:
+          action: more-info
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(var(--rgb-amber-color), 0.08);
+              border: 1px solid rgba(var(--rgb-amber-color), 0.2);
+            }
+
+  # ── Effektiv rente-kort ─────────────────────────────────
+  - type: horizontal-stack
+    cards:
+
+      - type: custom:mushroom-entity-card
+        entity: sensor.0050_rd_20s_2027_effektiv_rente
+        name: "Eff. rente S 2027"
+        icon: mdi:percent
+        icon_color: blue
+        primary_info: state
+        secondary_info: attribute
+        attribute: gruppe
+        layout: vertical
+        fill_container: true
+        tap_action:
+          action: more-info
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(var(--rgb-blue-color), 0.05);
+            }
+
+      - type: custom:mushroom-entity-card
+        entity: sensor.0100_rd_10a_2027_01_01_effektiv_rente
+        name: "Eff. rente 10A 2027"
+        icon: mdi:percent
+        icon_color: amber
+        primary_info: state
+        secondary_info: attribute
+        attribute: gruppe
+        layout: vertical
+        fill_container: true
+        tap_action:
+          action: more-info
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(var(--rgb-amber-color), 0.05);
+            }
+
+  # ── Detaljer ────────────────────────────────────────────
+  - type: custom:mushroom-template-card
+    primary: >
+      Kurs: {{ states('sensor.0050_rd_20s_2027_kurs') }}%
+      · Rente: {{ states('sensor.0050_rd_20s_2027_effektiv_rente') }}%
+    secondary: >
+      {% set attr = state_attr('sensor.0050_rd_20s_2027_kurs', 'åben_for_tilbud') %}
+      0,50% S 2027 ·
+      {% if attr %}Åben for tilbud ★{% else %}Lukket{% endif %}
+      · Opdateret: {{ state_attr('sensor.0050_rd_20s_2027_kurs', 'kurs_dato') }}
+    icon: mdi:bank-outline
+    icon_color: blue
+    tap_action:
+      action: more-info
+      entity: sensor.0050_rd_20s_2027_kurs
+    card_mod:
+      style: |
+        ha-card { background: transparent; box-shadow: none; }
+
+  - type: custom:mushroom-template-card
+    primary: >
+      Kurs: {{ states('sensor.0100_rd_10a_2027_01_01_kurs') }}%
+      · Rente: {{ states('sensor.0100_rd_10a_2027_01_01_effektiv_rente') }}%
+    secondary: >
+      {% set attr = state_attr('sensor.0100_rd_10a_2027_01_01_kurs', 'åben_for_tilbud') %}
+      1% 10A 2027 01/01 ·
+      {% if attr %}Åben for tilbud ★{% else %}Lukket{% endif %}
+      · Løbetid: {{ state_attr('sensor.0100_rd_10a_2027_01_01_kurs', 'løbetid') }}
+    icon: mdi:chart-line-variant
+    icon_color: amber
+    tap_action:
+      action: more-info
+      entity: sensor.0100_rd_10a_2027_01_01_kurs
+    card_mod:
+      style: |
+        ha-card { background: transparent; box-shadow: none; }
+
+  # ── Mini-graf: Kurser ────────────────────────────────────
+  - type: custom:mini-graph-card
+    name: Kurser over tid
+    icon: mdi:chart-areaspline
+    entities:
+      - entity: sensor.0050_rd_20s_2027_kurs
+        name: "0,50% S 2027"
+        color: "#3b82f6"
+      - entity: sensor.0100_rd_10a_2027_01_01_kurs
+        name: "1% 10A 2027"
+        color: "#f59e0b"
+    hours_to_show: 168
+    points_per_hour: 0.033
+    line_width: 2
+    font_size: 75
+    smoothing: true
+    show:
+      legend: true
+      average: true
+      extrema: true
+      fill: fade
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 12px;
+        }
+
+  # ── Mini-graf: Effektiv rente ────────────────────────────
+  - type: custom:mini-graph-card
+    name: Effektiv rente over tid
+    icon: mdi:percent
+    entities:
+      - entity: sensor.0050_rd_20s_2027_effektiv_rente
+        name: "0,50% S 2027"
+        color: "#3b82f6"
+      - entity: sensor.0100_rd_10a_2027_01_01_effektiv_rente
+        name: "1% 10A 2027"
+        color: "#f59e0b"
+    hours_to_show: 168
+    points_per_hour: 0.033
+    line_width: 2
+    font_size: 75
+    smoothing: true
+    show:
+      legend: true
+      average: true
+      extrema: true
+      fill: fade
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 12px;
+        }
